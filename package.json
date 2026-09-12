@@ -1,0 +1,17 @@
+{
+    "name": "homie",
+    "version": "0.0.0",
+    "private": true,
+    "description": "Homie: a shared rental record for landlords and tenants",
+    "workspaces": [
+        "packages/*",
+        "apps/*"
+    ],
+    "scripts": {
+        "dev:server": "npm run dev -w apps/server",
+        "dev:web": "npm run dev -w apps/web",
+        "build:web": "npm run build -w apps/web",
+        "start:server": "npm run start -w apps/server",
+        "typecheck": "npm run typecheck -w packages/shared && npm run typecheck -w apps/server && npm run typecheck -w apps/web"
+    }
+}
