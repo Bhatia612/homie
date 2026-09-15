@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
 import type { ApiError } from "@homie/shared"
-import { env } from "./env"
-import { sessionMiddleware } from "./session"
+import { env } from "./config/env"
+import { sessionMiddleware } from "./config/session"
 import { healthRouter } from "./routes/health"
 import { authRouter } from "./routes/auth"
 
