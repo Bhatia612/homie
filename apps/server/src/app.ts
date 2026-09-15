@@ -2,10 +2,16 @@ import express from "express"
 import cors from "cors"
 import type { ApiError } from "@homie/shared"
 import { env } from "./env"
+import { sessionMiddleware } from "./session"
 import { healthRouter } from "./routes/health"
+import { authRouter } from "./routes/auth"
 
 export function createApp() {
     const app = express()
+
+    if (env.isProd) {
+        app.set("trust proxy", 1)
+    }
 
     app.use(
         cors({
@@ -15,8 +21,10 @@ export function createApp() {
     )
 
     app.use(express.json())
+    app.use(sessionMiddleware)
 
     app.use("/api", healthRouter)
+    app.use("/api/auth", authRouter)
 
     app.use((_req, res) => {
         const body: ApiError = { code: "NOT_FOUND", message: "Route not found" }

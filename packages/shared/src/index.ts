@@ -10,3 +10,11 @@ export interface HealthResponse {
     service: "homie-server"
     time: string
 }
+
+
+export interface PublicUser {
+    id: string
+    name: string
+    email: string
+    role: Role
+}
