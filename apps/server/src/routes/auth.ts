@@ -10,6 +10,19 @@ import {
 
 export const authRouter = Router()
 
+function establishSession(req: import("express").Request, userId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        req.session.regenerate((err) => {
+            if (err) return reject(err)
+            req.session.userId = userId
+            req.session.save((saveErr) => {
+                if (saveErr) return reject(saveErr)
+                resolve()
+            })
+        })
+    })
+}
+
 function sendError(res: import("express").Response, err: unknown, next: import("express").NextFunction) {
     if (err instanceof AuthError) {
         const body: ApiError = { code: err.code, message: err.message }
@@ -31,7 +44,7 @@ authRouter.post("/register", async (req, res, next) => {
 
     try {
         const user = await registerUser({ name, email, password, role: role as Role })
-        req.session.userId = user.id
+        await establishSession(req, user.id)
         res.status(201).json(user)
     } catch (err) {
         sendError(res, err, next)
@@ -47,7 +60,7 @@ authRouter.post("/login", async (req, res, next) => {
 
     try {
         const user = await authenticateUser(email, password)
-        req.session.userId = user.id
+        await establishSession(req, user.id)
         res.json(user)
     } catch (err) {
         sendError(res, err, next)
