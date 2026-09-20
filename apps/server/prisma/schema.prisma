@@ -20,4 +20,40 @@ model User {
   name      String
   role      Role
   createdAt DateTime @default(now())
+  tenanciesCreated  Tenancy[]
+  memberships       TenancyMember[]
+}
+
+
+enum TenancyRole {
+  LANDLORD
+  TENANT
+}
+
+enum Province {
+  ON
+}
+
+model Tenancy {
+  id           String    @id @default(cuid())
+  addressLine  String
+  unit         String?
+  city         String
+  province     Province  @default(ON)
+  createdById  String
+  createdBy    User      @relation(fields: [createdById], references: [id])
+  members      TenancyMember[]
+  createdAt    DateTime  @default(now())
+}
+
+model TenancyMember {
+  id         String      @id @default(cuid())
+  tenancyId  String
+  tenancy    Tenancy     @relation(fields: [tenancyId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  role       TenancyRole
+  createdAt  DateTime    @default(now())
+
+  @@unique([tenancyId, userId])
 }

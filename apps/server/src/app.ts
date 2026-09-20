@@ -5,6 +5,7 @@ import { env } from "./config/env"
 import { sessionMiddleware } from "./config/session"
 import { healthRouter } from "./routes/health"
 import { authRouter } from "./routes/auth"
+import { tenancyRouter } from "./routes/tenancies"
 
 export function createApp() {
     const app = express()
@@ -25,6 +26,7 @@ export function createApp() {
 
     app.use("/api", healthRouter)
     app.use("/api/auth", authRouter)
+    app.use("/api/tenancies", tenancyRouter)
 
     app.use((_req, res) => {
         const body: ApiError = { code: "NOT_FOUND", message: "Route not found" }
