@@ -38,3 +38,18 @@ export async function listTenanciesForUser(userId: string) {
     orderBy: { createdAt: "desc" }
   })
 }
+
+export async function getTenancyForMember(tenancyId: string, userId: string) {
+  const membership = await prisma.tenancyMember.findUnique({
+    where: {
+      tenancyId_userId: { tenancyId, userId }
+    },
+    include: {
+      tenancy: {
+        include: { members: true }
+      }
+    }
+  })
+
+  return membership?.tenancy ?? null
+}
