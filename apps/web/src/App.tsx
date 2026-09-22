@@ -3,6 +3,7 @@ import { useAuth } from "./auth/AuthContext"
 import { WelcomePage } from "./pages/WelcomePage"
 import { DashboardPage } from "./pages/DashboardPage"
 import { ProtectedRoute } from "./components/ProtectedRoute"
+import { LoginPage } from "./pages/LoginPage"
 
 export default function App() {
   const { loading } = useAuth()
@@ -26,6 +27,7 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
