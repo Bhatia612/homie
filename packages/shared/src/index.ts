@@ -18,3 +18,26 @@ export interface PublicUser {
     email: string
     role: Role
 }
+
+export type Province = "ON"
+
+export type TenancyRole = "LANDLORD" | "TENANT"
+
+export interface TenancyMember {
+    id: string
+    tenancyId: string
+    userId: string
+    role: TenancyRole
+    createdAt: string
+}
+
+export interface Tenancy {
+    id: string
+    addressLine: string
+    unit: string | null
+    city: string
+    province: Province
+    createdById: string
+    createdAt: string
+    members?: TenancyMember[]
+}
